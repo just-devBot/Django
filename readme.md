@@ -1,115 +1,85 @@
-# Django REST Framework Documentation
+# Django Repository
 
-## Introduction
-Django REST Framework (DRF) is a powerful and flexible toolkit for building Web APIs in Django. This documentation will guide you through the steps to create APIs using DRF.
+Welcome to the Django repository! This repository contains a comprehensive guide to learning and mastering Django, a high-level Python web framework that encourages rapid development and clean, pragmatic design.
 
-## Prerequisites
-- Python installed on your system
-- Django installed (`pip install django`)
-- Django REST Framework installed (`pip install djangorestframework`)
+## Introduction to Django
 
-## Step 1: Setting Up the Django Project
-1. Create a new Django project:
-  ```bash
-  django-admin startproject myproject
-  cd myproject
-  ```
+Django is a powerful web framework that simplifies the process of building web applications. It follows the "batteries-included" philosophy, providing a wide range of built-in features such as authentication, database ORM, templating, and more. Django's primary goal is to ease the creation of complex, database-driven websites.
 
-2. Create a new Django app:
-  ```bash
-  python manage.py startapp myapp
-  ```
+## Learning Resources
 
-3. Add the app and REST framework to `INSTALLED_APPS` in `myproject/settings.py`:
-  ```python
-  INSTALLED_APPS = [
-    ...
-    'rest_framework',
-    'myapp',
-  ]
-  ```
+To get started with Django, we recommend the following resources:
 
-## Step 2: Creating Models
-1. Define your models in `myapp/models.py`:
-  ```python
-  from django.db import models
+- **Official Documentation**: The official Django documentation provides a thorough tutorial and reference material for all aspects of the framework.
+- **Django Girls**: A beginner-friendly tutorial that walks you through building your first Django application.
+- **Two Scoops of Django**: A book that offers best practices and tips for working with Django.
 
-  class Item(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
+## Topics Covered
 
-    def __str__(self):
-      return self.name
-  ```
+Once you have a basic understanding of Django, you can dive into the following topics to deepen your knowledge:
 
-2. Run migrations to create the database tables:
-  ```bash
-  python manage.py makemigrations
-  python manage.py migrate
-  ```
+1. **How to get body content and headers in views**
+2. **JSON: Parse content and use JsonResponse**
+3. **Render shortcut and templates (context, block, if, for loop)**
+4. **Models: Fields (DateTime -> ForeignKey -> ImageField)**
+5. **Models: Migration commands**
+6. **Models: ModelAdmin (list_display) and TabularInline**
+7. **Forms (Basic usage)**
+8. **File Storage**
+9. **Class Based Views (FBVs vs CBVs)**
+10. **User: Authentication (auth URLs and modify default templates)**
+11. **User: Custom Authentication views (authenticate, login, logout)**
+12. **User: Set permissions and groups**
+13. **User: Profile Model vs AbstractUser**
+14. **Signals**
+15. **How to send emails**
+16. **Tests (learn about UnitTest framework)**
+17. **Django Rest Framework (see documentation and Medium posts)**
+18. **DRF: APIView**
+19. **DRF: Serializer and ModelSerializer**
+20. **DRF: Generic views**
+21. **DRF: Pagination**
+22. **DRF: Session/Token Authentication and permissions**
+23. **DRF: Custom Authentication**
+24. **DRF: Tests (APIClient)**
+25. **OAuth (OAuth Toolkit)**
+26. **Celery (create tasks and periodic tasks)**
+27. **(good to know) Django Channels**
+28. **(optional) Django Ninja**
+29. **Upload to production (run as a service, use Apache or NGINX, WhiteNoise, Docker)**
 
-## Step 3: Creating Serializers
-1. Create a serializer for your model in `myapp/serializers.py`:
-  ```python
-  from rest_framework import serializers
-  from .models import Item
+## Additional Markdown Files
 
-  class ItemSerializer(serializers.ModelSerializer):
-    class Meta:
-      model = Item
-      fields = '__all__'
-  ```
+To organize the content, we will create separate markdown files for each topic listed above. Each file will contain detailed explanations, code examples, and best practices.
 
-## Step 4: Creating Views
-1. Create views for your API in `myapp/views.py`:
-  ```python
-  from rest_framework import generics
-  from .models import Item
-  from .serializers import ItemSerializer
+- `01_get_body_content_and_headers.md`
+- `02_json_parse_and_jsonresponse.md`
+- `03_render_shortcut_and_templates.md`
+- `04_models_fields.md`
+- `05_models_migration_commands.md`
+- `06_models_modeladmin_and_tabularinline.md`
+- `07_forms_basic_usage.md`
+- `08_file_storage.md`
+- `09_class_based_views.md`
+- `10_user_authentication.md`
+- `11_user_custom_authentication_views.md`
+- `12_user_permissions_and_groups.md`
+- `13_user_profile_model_vs_abstractuser.md`
+- `14_signals.md`
+- `15_how_to_send_emails.md`
+- `16_tests_unittest_framework.md`
+- `17_django_rest_framework.md`
+- `18_drf_apiview.md`
+- `19_drf_serializer_and_modelserializer.md`
+- `20_drf_generic_views.md`
+- `21_drf_pagination.md`
+- `22_drf_session_token_authentication.md`
+- `23_drf_custom_authentication.md`
+- `24_drf_tests_apiclient.md`
+- `25_oauth_toolkit.md`
+- `26_celery_tasks.md`
+- `27_django_channels.md`
+- `28_django_ninja.md`
+- `29_upload_to_production.md`
 
-  class ItemListCreate(generics.ListCreateAPIView):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
-
-  class ItemDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
-  ```
-
-## Step 5: Configuring URLs
-1. Add URL patterns for your API in `myapp/urls.py`:
-  ```python
-  from django.urls import path
-  from .views import ItemListCreate, ItemDetail
-
-  urlpatterns = [
-    path('items/', ItemListCreate.as_view(), name='item-list-create'),
-    path('items/<int:pk>/', ItemDetail.as_view(), name='item-detail'),
-  ]
-  ```
-
-2. Include the app URLs in the project’s `urls.py`:
-  ```python
-  from django.contrib import admin
-  from django.urls import path, include
-
-  urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('myapp.urls')),
-  ]
-  ```
-
-## Step 6: Testing the API
-1. Run the Django development server:
-  ```bash
-  python manage.py runserver
-  ```
-
-2. Use a tool like Postman or curl to test your API endpoints:
-  - List and create items: `http://127.0.0.1:8000/api/items/`
-  - Retrieve, update, and delete an item: `http://127.0.0.1:8000/api/items/<id>/`
-
-## Conclusion
-You have now created a basic API using Django REST Framework. You can extend this by adding authentication, permissions, and more complex functionality as needed.
-
-For more information, refer to the [Django REST Framework documentation](https://www.django-rest-framework.org/).
+Feel free to explore each topic and enhance your Django skills!
